@@ -1,3 +1,4 @@
+const axios = require('axios');
 const loadAllProducts = require('../../src/helpers/loadProductsDb');
 const db = require('../../models/index');
 
@@ -13,5 +14,12 @@ describe('The loadAllProducts helper function ', () => {
     //   price: 100,
     //   imageLink: 'www.google.com',
     // });
+  });
+
+  it('should mock axios to fetch all the products from the api', async () => {
+    const mockAxios = jest.spyOn(axios, 'get');
+    mockAxios.mockResolvedValue(true);
+    loadAllProducts();
+    expect(mockAxios).toHaveBeenCalled();
   });
 });
