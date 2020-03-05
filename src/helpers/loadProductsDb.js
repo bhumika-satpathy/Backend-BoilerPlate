@@ -17,4 +17,4 @@ const loadAllProducts = async () => {
   }
 };
 
-module.exports = loadAllProducts;
+module.exports = { loadAllProducts };

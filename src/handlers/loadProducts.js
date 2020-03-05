@@ -1,4 +1,4 @@
-const loadAllProducts = require('../helpers/loadProductsDb');
+const { loadAllProducts } = require('../helpers/loadProductsDb');
 
 const loadProducts = async (request, h) => {
   try {
@@ -8,5 +8,6 @@ const loadProducts = async (request, h) => {
     return h.response(err).code(500);
   }
 };
+
 
 module.exports = { loadProducts };

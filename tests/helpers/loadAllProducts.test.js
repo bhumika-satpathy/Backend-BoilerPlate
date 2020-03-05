@@ -1,5 +1,5 @@
 const axios = require('axios');
-const loadAllProducts = require('../../src/helpers/loadProductsDb');
+const { loadAllProducts } = require('../../src/helpers/loadProductsDb');
 const db = require('../../models/index');
 
 describe('The loadAllProducts helper function ', () => {
