@@ -1,5 +1,5 @@
 const Hapi = require('@hapi/hapi');
-const routes = require('./routes');
+const routes = require('./routes/getProducts');
 
 const createServer = async () => {
   const server = await Hapi.server({

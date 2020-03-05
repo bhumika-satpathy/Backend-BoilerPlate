@@ -2,7 +2,7 @@
   "development": {
     "username": "Bhumika_Satpathy",
     "password": null,
-    "database": "database_development",
+    "database": "productsdb",
     "host": "127.0.0.1",
     "dialect": "postgres",
     "operatorsAliases": false

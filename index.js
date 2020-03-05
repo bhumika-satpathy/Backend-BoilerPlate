@@ -6,7 +6,7 @@ const start = async () => {
     await server.start();
     console.log('server started at ', server.info.uri);
   } catch (err) {
-    console.error(err);
+    console.error('Errrrror', err);
     throw err;
   }
 };
