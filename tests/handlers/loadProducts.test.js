@@ -43,4 +43,18 @@ describe('the loadProducts handler ', () => {
     // expect(mockCode).toHaveBeenCalledWith(500);
     mockGetAllProducts.mockRestore();
   });
+
+  it('should return a failure message with status code 500 when db is not loaded', async () => {
+    const mockGetAllProducts = jest.spyOn(dbOperations, 'getAllProducts');
+    mockGetAllProducts.mockRejectedValue(new Error('Could get the products!'));
+    const mockCode = jest.fn();
+    const mockH = {
+      response: jest.fn(() => ({ code: mockCode })),
+    };
+    await getProducts(null, mockH);
+    // expect(mockLoadAllProducts).toHaveBeenCalled();
+    // expect(mockH.response).toHaveBeenCalledWith('Could not load the Database!');
+    // expect(mockCode).toHaveBeenCalledWith(500);
+    mockGetAllProducts.mockRestore();
+  });
 });
