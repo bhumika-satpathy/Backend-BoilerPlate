@@ -17,4 +17,19 @@ const loadAllProducts = async () => {
   }
 };
 
-module.exports = { loadAllProducts };
+const getAllProducts = async () => {
+  const products = [];
+  const result = await db.allproducts.findAll({
+  });
+  result.forEach((product) => {
+    products.push({
+      name: product.dataValues.name,
+      quantity: product.dataValues.quantity,
+      price: product.dataValues.price,
+      link: product.dataValues.link,
+    });
+  });
+  return products;
+};
+
+module.exports = { loadAllProducts, getAllProducts };
