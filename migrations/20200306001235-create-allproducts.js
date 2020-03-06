@@ -1,6 +1,6 @@
 
 module.exports = {
-  up: (queryInterface, Sequelize) => queryInterface.createTable('products', {
+  up: (queryInterface, Sequelize) => queryInterface.createTable('allproducts', {
     id: {
       allowNull: false,
       autoIncrement: true,
@@ -9,7 +9,6 @@ module.exports = {
     },
     productId: {
       type: Sequelize.INTEGER,
-      primaryKey: true,
     },
     name: {
       type: Sequelize.STRING,
@@ -23,6 +22,12 @@ module.exports = {
     link: {
       type: Sequelize.STRING,
     },
+    category: {
+      type: Sequelize.STRING,
+    },
+    count: {
+      type: Sequelize.INTEGER,
+    },
     createdAt: {
       allowNull: false,
       type: Sequelize.DATE,
@@ -32,5 +37,5 @@ module.exports = {
       type: Sequelize.DATE,
     },
   }),
-  down: (queryInterface, Sequelize) => queryInterface.dropTable('products'),
+  down: (queryInterface, Sequelize) => queryInterface.dropTable('allproducts'),
 };

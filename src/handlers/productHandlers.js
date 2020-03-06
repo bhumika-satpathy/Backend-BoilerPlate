@@ -2,6 +2,7 @@ const { loadAllProducts, getAllProducts } = require('../helpers/dbOperations');
 
 const loadProducts = async (request, h) => {
   try {
+    console.log('Inside handler');
     await loadAllProducts();
     return h.response('Loaded all the Products to the Database!').code(200);
   } catch (err) {
@@ -17,6 +18,5 @@ const getProducts = async (request, h) => {
     return h.response(err);
   }
 };
-
 
 module.exports = { loadProducts, getProducts };
