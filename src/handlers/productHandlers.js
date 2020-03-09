@@ -1,4 +1,4 @@
-const { loadAllProducts, getAllProducts } = require('../helpers/dbOperations');
+const { loadAllProducts, getAllProducts, getCategoriesDb } = require('../helpers/dbOperations');
 
 const loadProducts = async (request, h) => {
   try {
@@ -19,4 +19,13 @@ const getProducts = async (request, h) => {
   }
 };
 
-module.exports = { loadProducts, getProducts };
+const getCategories = async (request, h) => {
+  try {
+    const categoriesArray = await getCategoriesDb();
+    return h.response(categoriesArray).code(200);
+  } catch (err) {
+    return h.response(err.message).code(500);
+  }
+};
+
+module.exports = { loadProducts, getProducts, getCategories };

@@ -41,4 +41,14 @@ const getAllProducts = async () => {
   return products;
 };
 
-module.exports = { loadAllProducts, getAllProducts };
+const getCategoriesDb = async () => {
+  const categories = [];
+  const products = await db.allproducts.findAll();
+
+  products.forEach((product) => {
+    if (categories.indexOf(product.category) === -1)categories.push(product.category);
+  });
+  return categories;
+};
+
+module.exports = { loadAllProducts, getAllProducts, getCategoriesDb };
