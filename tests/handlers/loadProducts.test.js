@@ -30,6 +30,34 @@ describe('the getProdcts handler', () => {
   });
 });
 
+describe('The getCategories handler should ', () => {
+  it('should return a status code of 200 when the it fetches the category of a particular item', async () => {
+    const mockCode = jest.fn();
+    const mockH = {
+      response: jest.fn(() => ({ code: mockCode })),
+    };
+    const mockGetCategory = jest.spyOn(dbOperations, 'getCategoriesDb');
+    mockGetCategory.mockResolvedValue(['fruits', 'dairy', 'household']);
+    await getCategories(null, mockH);
+    expect(mockGetCategory).toHaveBeenCalled();
+    expect(mockCode).toHaveBeenCalledWith(200);
+    expect(mockH.response).toHaveBeenCalledWith(['fruits', 'dairy', 'household']);
+  });
+
+  it('should return a status code of 500 when error is encountered', async () => {
+    const mockCode = jest.fn();
+    const mockH = {
+      response: jest.fn(() => ({ code: mockCode })),
+    };
+    const mockGetCategory = jest.spyOn(dbOperations, 'getCategoriesDb');
+    mockGetCategory.mockRejectedValue(new Error('Error encountered!'));
+    await getCategories(null, mockH);
+    expect(mockGetCategory).toHaveBeenCalled();
+    expect(mockCode).toHaveBeenCalledWith(500);
+    expect(mockH.response).toHaveBeenCalledWith('Error encountered!');
+  });
+});
+
 describe('the update cart handler', () => {
   const mockReq = {
     payload: {
