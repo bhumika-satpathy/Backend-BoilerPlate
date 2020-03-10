@@ -3,6 +3,33 @@ const {
   getProducts, getCategories, updateCart, updateQuantityHandler,
 } = require('../../src/handlers/productHandlers');
 
+describe('the getProdcts handler', () => {
+  it('should respond with 200 and get all the values', async () => {
+    const mockCode = jest.fn();
+    const mockH = { response: jest.fn(() => ({ code: mockCode })) };
+    const mockGetProducts = jest.spyOn(dbOperations, 'getAllProducts');
+    mockGetProducts.mockResolvedValue({});
+    await getProducts(null, mockH);
+    expect(mockGetProducts).toHaveBeenCalled();
+    expect(mockCode).toHaveBeenCalledWith(200);
+    expect(mockH.response).toHaveBeenCalledWith({});
+    mockGetProducts.mockRestore();
+  });
+  it('should respond with 500 error if an error occurs', async () => {
+    const mockCode = jest.fn();
+    const mockH = {
+      response: jest.fn(() => ({ code: mockCode })),
+    };
+    const mockGetProducts = jest.spyOn(dbOperations, 'getAllProducts');
+    mockGetProducts.mockRejectedValue(new Error('Error encountered!'));
+    await getProducts(null, mockH);
+    expect(mockGetProducts).toHaveBeenCalled();
+    expect(mockCode).toHaveBeenCalledWith(500);
+    expect(mockH.response).toHaveBeenCalledWith('Error encountered!');
+    mockGetProducts.mockRestore();
+  });
+});
+
 describe('the update cart handler', () => {
   const mockReq = {
     payload: {

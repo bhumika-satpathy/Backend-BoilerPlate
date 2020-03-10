@@ -3,9 +3,9 @@ const dbOperations = require('../helpers/dbOperations');
 const getProducts = async (request, h) => {
   try {
     const products = await dbOperations.getAllProducts();
-    return h.response(products);
+    return h.response(products).code(200);
   } catch (err) {
-    return h.response(err);
+    return h.response(err.message).code(500);
   }
 };
 
