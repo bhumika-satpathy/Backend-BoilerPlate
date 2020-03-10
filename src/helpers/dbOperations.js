@@ -6,24 +6,6 @@ const getCategory = async (id) => {
   return (category.data.category);
 };
 
-// const loadAllProducts = async () => {
-//   const products = await axios.get('http://ec2-54-157-238-134.compute-1.amazonaws.com:8080/products');
-//   if (await db.allproducts.count() === 0) {
-//     products.data.forEach(async (product) => {
-//       const category = await getCategory(product.id);
-//       await db.allproducts.create({
-//         productId: product.id,
-//         name: product.name,
-//         quantity: product.quantity,
-//         price: product.price,
-//         link: product.imageLink,
-//         count: 0,
-//         category,
-//       });
-//     });
-//   }
-// };
-
 const getAllProducts = async () => {
   if (await db.allproducts.count() === 0) {
     const products = await axios.get('http://ec2-54-157-238-134.compute-1.amazonaws.com:8080/products');
@@ -40,11 +22,11 @@ const getAllProducts = async () => {
       });
     });
   }
-  const allproducts = [];
+  const allProductsData = [];
   const result = await db.allproducts.findAll({
   });
   result.forEach((product) => {
-    allproducts.push({
+    allProductsData.push({
       id: product.dataValues.productId,
       name: product.dataValues.name,
       quantity: product.dataValues.quantity,
@@ -54,7 +36,7 @@ const getAllProducts = async () => {
       count: product.dataValues.count,
     });
   });
-  return allproducts;
+  return allProductsData;
 };
 
 const getCategoriesDb = async () => {

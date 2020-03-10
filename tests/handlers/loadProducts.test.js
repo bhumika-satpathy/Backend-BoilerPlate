@@ -1,6 +1,6 @@
 const dbOperations = require('../../src/helpers/dbOperations');
 const {
-  loadProducts, getProducts, getCategories, updateCart, updateQuantityHandler,
+  getProducts, getCategories, updateCart, updateQuantityHandler,
 } = require('../../src/handlers/productHandlers');
 
 describe('the update cart handler', () => {
