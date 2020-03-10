@@ -6,9 +6,27 @@ const getCategory = async (id) => {
   return (category.data.category);
 };
 
-const loadAllProducts = async () => {
-  const products = await axios.get('http://ec2-54-157-238-134.compute-1.amazonaws.com:8080/products');
+// const loadAllProducts = async () => {
+//   const products = await axios.get('http://ec2-54-157-238-134.compute-1.amazonaws.com:8080/products');
+//   if (await db.allproducts.count() === 0) {
+//     products.data.forEach(async (product) => {
+//       const category = await getCategory(product.id);
+//       await db.allproducts.create({
+//         productId: product.id,
+//         name: product.name,
+//         quantity: product.quantity,
+//         price: product.price,
+//         link: product.imageLink,
+//         count: 0,
+//         category,
+//       });
+//     });
+//   }
+// };
+
+const getAllProducts = async () => {
   if (await db.allproducts.count() === 0) {
+    const products = await axios.get('http://ec2-54-157-238-134.compute-1.amazonaws.com:8080/products');
     products.data.forEach(async (product) => {
       const category = await getCategory(product.id);
       await db.allproducts.create({
@@ -17,28 +35,26 @@ const loadAllProducts = async () => {
         quantity: product.quantity,
         price: product.price,
         link: product.imageLink,
+        count: 0,
         category,
       });
     });
   }
-};
-
-const getAllProducts = async () => {
-  const products = [];
+  const allproducts = [];
   const result = await db.allproducts.findAll({
   });
   result.forEach((product) => {
-    products.push({
+    allproducts.push({
       id: product.dataValues.productId,
       name: product.dataValues.name,
       quantity: product.dataValues.quantity,
       price: product.dataValues.price,
       link: product.dataValues.link,
       category: product.dataValues.category,
-      count: 0,
+      count: product.dataValues.count,
     });
   });
-  return products;
+  return allproducts;
 };
 
 const getCategoriesDb = async () => {
@@ -51,4 +67,24 @@ const getCategoriesDb = async () => {
   return categories;
 };
 
-module.exports = { loadAllProducts, getAllProducts, getCategoriesDb };
+const updateCartValue = async (id, value) => {
+  const res = await db.allproducts.update({ count: value }, {
+    where: {
+      productId: id,
+    },
+  });
+  return res;
+};
+
+const updateQuantity = async (id, value) => {
+  const result = await db.products.update({ quantity: value, count: 0 }, {
+    where: {
+      productId: id,
+    },
+  });
+  return result;
+};
+
+module.exports = {
+  getAllProducts, getCategoriesDb, updateCartValue, updateQuantity,
+};

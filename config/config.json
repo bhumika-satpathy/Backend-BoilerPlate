@@ -10,7 +10,7 @@
   "test": {
     "username": "Bhumika_Satpathy",
     "password": null,
-    "database": "database_test",
+    "database": "productsdb",
     "host": "127.0.0.1",
     "dialect": "postgres",
     "operatorsAliases": false
@@ -18,7 +18,7 @@
   "production": {
     "username": "Bhumika_Satpathy",
     "password": null,
-    "database": "database_production",
+    "database": "productsdb",
     "host": "127.0.0.1",
     "dialect": "postgres",
     "operatorsAliases": false

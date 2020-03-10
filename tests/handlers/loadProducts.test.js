@@ -1,60 +1,60 @@
 const dbOperations = require('../../src/helpers/dbOperations');
-const { loadProducts, getProducts } = require('../../src/handlers/productHandlers');
+const {
+  loadProducts, getProducts, getCategories, updateCart, updateQuantityHandler,
+} = require('../../src/handlers/productHandlers');
 
-describe('the loadProducts handler ', () => {
-  it('should return a success message with status code 200 when data is successfully inserted to the db', async () => {
-    const mockLoadAllProducts = jest.spyOn(dbOperations, 'loadAllProducts');
-    mockLoadAllProducts.mockResolvedValue(true);
-    const mockCode = jest.fn();
-    const mockH = {
-      response: jest.fn(() => ({ code: mockCode })),
-    };
-    await loadProducts(null, mockH);
-    // expect(mockLoadAllProducts).toHaveBeenCalled();
-    // expect(mockH.response).toHaveBeenCalledWith('Loaded all the Products to the Database!');
-    // expect(mockCode).toHaveBeenCalledWith(200);
-    mockLoadAllProducts.mockRestore();
+describe('the update cart handler', () => {
+  const mockReq = {
+    payload: {
+      value: 4,
+    },
+    params: {
+      id: 1,
+    },
+  };
+  const mockCode = jest.fn();
+  const mockH = {
+    response: jest.fn(() => ({ code: mockCode })),
+  };
+  it('should respond with 200 and the updated cart values', async () => {
+    const mockCart = jest.spyOn(dbOperations, 'updateCartValue');
+    mockCart.mockResolvedValue({});
+    await updateCart(mockReq, mockH);
+    expect(mockCart).toHaveBeenCalled();
+    expect(mockCode).toHaveBeenCalledWith(200);
+    expect(mockH.response).toHaveBeenCalledWith({});
+    mockCart.mockRestore();
   });
-
-  it('should return a failure message with status code 500 when db is not loaded', async () => {
-    const mockLoadAllProducts = jest.spyOn(dbOperations, 'loadAllProducts');
-    mockLoadAllProducts.mockRejectedValue(new Error('Could not load the Database!'));
-    const mockCode = jest.fn();
-    const mockH = {
-      response: jest.fn(() => ({ code: mockCode })),
-    };
-    await loadProducts(null, mockH);
-    // expect(mockLoadAllProducts).toHaveBeenCalled();
-    // expect(mockH.response).toHaveBeenCalledWith('Could not load the Database!');
-    // expect(mockCode).toHaveBeenCalledWith(500);
-    mockLoadAllProducts.mockRestore();
+  it('should respond with 500 error if an error occurs', async () => {
+    const mockCart = jest.spyOn(dbOperations, 'updateCartValue');
+    mockCart.mockRejectedValue(new Error('error'));
+    await updateCart(mockReq, mockH);
+    expect(mockCart).toHaveBeenCalled();
+    expect(mockCode).toHaveBeenCalledWith(500);
+    expect(mockH.response).toHaveBeenCalledWith('error');
+    mockCart.mockRestore();
   });
+});
 
-  it('should return a success message with status code 200 when db gives all the data', async () => {
-    const mockGetAllProducts = jest.spyOn(dbOperations, 'getAllProducts');
-    mockGetAllProducts.mockResolvedValue(true);
-    const mockCode = jest.fn();
-    const mockH = {
-      response: jest.fn(() => ({ code: mockCode })),
-    };
-    await getProducts(null, mockH);
-    // expect(mockLoadAllProducts).toHaveBeenCalled();
-    // expect(mockH.response).toHaveBeenCalledWith('Could not load the Database!');
-    // expect(mockCode).toHaveBeenCalledWith(500);
-    mockGetAllProducts.mockRestore();
-  });
-
-  it('should return a failure message with status code 500 when db is not loaded', async () => {
-    const mockGetAllProducts = jest.spyOn(dbOperations, 'getAllProducts');
-    mockGetAllProducts.mockRejectedValue(new Error('Could get the products!'));
-    const mockCode = jest.fn();
-    const mockH = {
-      response: jest.fn(() => ({ code: mockCode })),
-    };
-    await getProducts(null, mockH);
-    // expect(mockLoadAllProducts).toHaveBeenCalled();
-    // expect(mockH.response).toHaveBeenCalledWith('Could not load the Database!');
-    // expect(mockCode).toHaveBeenCalledWith(500);
-    mockGetAllProducts.mockRestore();
+describe('the update quantity handler', () => {
+  const mockReq = {
+    payload: [{
+      id: 1,
+      quantity: 4,
+      count: 3,
+    }],
+  };
+  const mockCode = jest.fn();
+  const mockH = {
+    response: jest.fn(() => ({ code: mockCode })),
+  };
+  it('should respond with 200 and the updated quantity values', async () => {
+    const mockQuantity = jest.spyOn(dbOperations, 'updateQuantity');
+    mockQuantity.mockResolvedValue({});
+    await updateQuantityHandler(mockReq, mockH);
+    expect(mockQuantity).toHaveBeenCalledWith(1, 1);
+    expect(mockCode).toHaveBeenCalledWith(200);
+    expect(mockH.response).toHaveBeenCalledWith('Updated the Quantity!');
+    mockQuantity.mockRestore();
   });
 });
